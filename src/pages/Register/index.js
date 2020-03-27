@@ -1,5 +1,5 @@
 import React, {useState} from 'react'
-import {Link} from 'react-router-dom'
+import {Link, useHistory} from 'react-router-dom'
 import {FiArrowLeft} from 'react-icons/fi'
 
 import api from '../../services/api'
@@ -10,28 +10,32 @@ import './styles.css'
 
 export default function Register() {
 
-    const [name, setName] = useState('');
+    const [nome, setNome] = useState('');
     const [email, setEmail] = useState('');
     const [whatsapp, setWhatsapp] = useState('');
     const [cidade, setCidade] = useState('');
     const [uf, setUf] = useState('');
 
+    const history = useHistory();
+
     async function handleRegister(e) {
         e.preventDefault();
 
         const data = {
-            name,
+            nome,
             email, 
             whatsapp,
             cidade,
             uf,
         };
-
+        console.log(data)
         try{
             const response = await api.post('ongs', data);
+            
           alert(`Seu ID de acesso ${response.data.id}`)
+          history.push('/');
         }catch (err) {
-           console.log('Erro no cadastro, tente novamente.')
+          alert('Não foi possível cadastrar')
         }
     }
 
@@ -53,8 +57,8 @@ export default function Register() {
                 <form onSubmit={handleRegister}>
                     <input 
                     placeholder="Nome da Ong"
-                    value={name}
-                    onChange={e => setName(e.target.value)}
+                    value={nome}
+                    onChange={e => setNome(e.target.value)}
                     />
                     <input 
                     type="email" 
